@@ -8,34 +8,25 @@ import org.eclipse.swt.widgets.Shell;
 
 import biblioteka.book.Book;
 import biblioteka.interfaces.IModelData;
+import biblioteka.views.EditStatusDialog;
 import biblioteka.views.NewBookDialog;
 import biblioteka.views.PartView;
 
-public class AddNewBookHandler {
+public class EditStatusHandler {
 	
 	@Execute
 	public void execute(MPart mpart, Shell shell) {
-		System.out.println(shell);
+		
 		PartView partv = (PartView) mpart.getObject();
 		IModelData dataM = partv.getModelImplementation();
 
-		NewBookDialog dialog = new NewBookDialog(shell);
+		EditStatusDialog dialog = new EditStatusDialog(shell);
 
                 // get the new values from the dialog
                 if (dialog.open() == Window.OK) {
                         
-                        int id  = dialog.getId();
-                        String title = dialog.getTitle();
-                        String authors = dialog.getAuthors();
-                        String publYear = dialog.getPublYear();
-                        Book book = new Book(id,title,authors,publYear,dialog.getStatus());
-                        dataM.addNewBook(book);
 
-                        partv.refreshView();
-                        System.out.println("AFTER refresh");
-                        System.out.println(dataM.getAllBooks().size());
                 }
         
 	}
-		
 }

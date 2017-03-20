@@ -36,8 +36,8 @@ public class PartView {
 	private Combo comboBox;
 	@PostConstruct
 	public void postConstruct(Composite parent,ESelectionService service) {
-	    parent.setLayout(new GridLayout(2, false));
-	    
+	    System.out.println("JEST");
+		parent.setLayout(new GridLayout(2, false));
 	    
 	    comboBox = new Combo(parent,SWT.READ_ONLY);
 	    String items[] = {"Implementacja XML","Mocked-Database"};

@@ -1,16 +1,21 @@
 package biblioteka.views;
 
+
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -29,6 +34,7 @@ public class NewBookDialog extends Dialog {
 
         public NewBookDialog(Shell parentShell) {
                 super(parentShell);
+
         }
 
         @Override
@@ -56,10 +62,13 @@ public class NewBookDialog extends Dialog {
                 comboStatus.select(1);
                 Label lblbreak = createLabel(container, "asd");
                 lblbreak.setVisible(false);
-                lblMessage = new Label(container, SWT.NONE);
+                lblMessage = new Label(container, SWT.CENTER);
                 lblMessage.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false,2,2));
                 lblMessage.setVisible(true);
-                lblMessage.setText("asdddddd adasdasd asdasdasda asdasdasdasdasdasdadasdas dasd asdasdasdasasdas ");
+                Device device = Display.getCurrent();
+                Color red = new Color (device, 255, 0, 0);
+                lblMessage.setBackground(red);
+                lblMessage.setText("Space for errors message ");
                /* txtUser.addModifyListener(new ModifyListener() {
 
                         @Override
@@ -114,7 +123,12 @@ public class NewBookDialog extends Dialog {
         protected Point getInitialSize() {
                 return new Point(450, 300);
         }
-
+        
+        @Override
+        protected void configureShell(Shell shell) {
+            super.configureShell(shell);
+            shell.setText("Add new book");
+         }
         @Override
         protected void okPressed() {
         		
