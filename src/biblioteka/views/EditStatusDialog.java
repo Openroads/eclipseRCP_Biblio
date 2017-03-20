@@ -13,7 +13,7 @@ import org.eclipse.swt.layout.GridLayout;
 
 public class EditStatusDialog extends Dialog {
 	private Combo comboStatus;
-	
+	private String choose;
 	@Override
 	protected Control createDialogArea(Composite parent) {	
 		
@@ -44,10 +44,6 @@ public class EditStatusDialog extends Dialog {
                             IDialogConstants.CANCEL_LABEL, false);
     }
 
-    /*@Override
-    protected Point getInitialSize() {
-            return new Point(450, 300);
-    }*/
     
     @Override
     protected void configureShell(Shell shell) {
@@ -57,10 +53,14 @@ public class EditStatusDialog extends Dialog {
     @Override
     protected void okPressed() {
     		
-    		// TODO do walidacji
+    		this.choose = comboStatus.getText();
 
             super.okPressed();
           
+    }
+    public String getStatus()
+    {
+    	return this.choose;
     }
 
 

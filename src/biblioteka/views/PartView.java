@@ -31,9 +31,10 @@ public class PartView {
 
 	private CheckboxTableViewer viewer;
 	private IModelData dataModel;
-	private Button btnDeleteSelected;
+	private Button selectAll;
 	private Button btnAddNew;
 	private Combo comboBox;
+	
 	@PostConstruct
 	public void postConstruct(Composite parent,ESelectionService service) {
 	    System.out.println("JEST");
@@ -120,11 +121,18 @@ public class PartView {
 	    
 	    /****************** Buttons ******************/
 	    
-	    //btnDeleteSelected = new Button(parent, SWT.NONE);
+	    selectAll = new Button(parent, SWT.NONE);
 	   
-	    //btnDeleteSelected.setText("Delete selected");
+	    selectAll.setText("Select All");
+	    selectAll.setLayoutData( new GridData(SWT.LEFT,SWT.CENTER,true,false,1,1));
+	    selectAll.addSelectionListener(new SelectionAdapter() {
+	    	@Override
+	    	public void widgetSelected(SelectionEvent e) {
+	    		viewer.setAllChecked(true);
+	    	}
+	    	});
 	    
-	   // btnChangeStatus = new Button(parent, SWT.NONE);
+	    // btnChangeStatus = new Button(parent, SWT.NONE);
 	   // btnChangeStatus.setText("Change status");
 	   // btnAddNew = new Button(parent, SWT.NONE);
 	    //btnAddNew.setText("Add new");
@@ -159,19 +167,7 @@ public class PartView {
 	 
 	    
 	    
-	    /* btnDeleteSelected.addSelectionListener(new SelectionAdapter() {
-    	@Override
-    	public void widgetSelected(SelectionEvent e) {
-    		Object[] books = viewer.getCheckedElements();
-    		
-    		System.out.println(books[0].toString());
-    		System.out.println(comboBox.getSelectionIndex());
-    		
-    	}
-    });*/
-
 	}
-	
 	public void addNewBookListener(SelectionAdapter adapter)
 	{
 		btnAddNew.addSelectionListener(adapter);
@@ -179,7 +175,7 @@ public class PartView {
 	
 	public void deleteBookListener(SelectionAdapter adapter)
 	{
-		btnDeleteSelected.addSelectionListener(adapter);
+		selectAll.addSelectionListener(adapter);
 	}
 	
 	public int getSelectedModelImplementation()
@@ -191,6 +187,7 @@ public class PartView {
 	{
 		return this.dataModel;
 	}
+	
 	public int[] getSelectedBooksId()
 	{
 		Object[] bId = viewer.getCheckedElements();
@@ -204,8 +201,12 @@ public class PartView {
 	public void refreshView()
     {
 		viewer.setInput(this.dataModel.getAllBooks());
+
     }
-	
+	public void unselectView()
+	{
+		viewer.setAllChecked(false);
+	}
 	@Focus
 	public void setFocus()
 	{

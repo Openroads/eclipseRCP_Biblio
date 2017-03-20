@@ -3,6 +3,7 @@ package bilbioteka.handlers;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
@@ -19,14 +20,23 @@ public class EditStatusHandler {
 		
 		PartView partv = (PartView) mpart.getObject();
 		IModelData dataM = partv.getModelImplementation();
-
-		EditStatusDialog dialog = new EditStatusDialog(shell);
-
-                // get the new values from the dialog
-                if (dialog.open() == Window.OK) {
-                        
-
-                }
-        
+		
+		int[] idToChangeStatus = partv.getSelectedBooksId();
+		if(idToChangeStatus.length<=0)
+		{
+			MessageDialog.openInformation(shell, "Status", "Select positions to change status");
+		}else
+		{
+		
+			
+			EditStatusDialog dialog = new EditStatusDialog(shell);
+	
+	                // get the new values from the dialog
+	                if (dialog.open() == Window.OK) {
+	                	dataM.setBookStatus(idToChangeStatus, dialog.getStatus());
+	                	partv.refreshView();
+	                	partv.unselectView();
+	                }
+		}
 	}
 }

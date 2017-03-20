@@ -76,13 +76,13 @@ public class MockBook implements IModelData {
 
 	@Override
 	public void deleteBook(int[] ids) {
-	for(Integer id : ids)
-		for(Book book : books)
-			if(book.getId() == id)
-			{
-				this.books.remove(book);
-				break;
-			}
+		for(Integer id : ids)
+			for(Book book : books)
+				if(book.getId() == id)
+				{
+					this.books.remove(book);
+					break;
+				}
 	}
 
 	@Override
@@ -103,6 +103,17 @@ public class MockBook implements IModelData {
 				if (cBook.equals(book))
 				{
 					cBook.setStatus(status);
+				}
+	}
+	
+	@Override
+	public void setBookStatus(int[] ids,String status) {
+		for(Integer id : ids)
+			for(Book book : books)
+				if(book.getId() == id)
+				{
+					book.setStatus(status);
+					break;
 				}
 	}
 

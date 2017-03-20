@@ -13,5 +13,7 @@ public interface IModelData {
 	public void deleteBook(int[] ids);
 	public void setBookStatus(Book book, String status);
 	public void setBookStatus(Collection <Book> books, String status);
+	public void setBookStatus(int[] ids, String status);
 	public void checkBooksStatus();
+
 }

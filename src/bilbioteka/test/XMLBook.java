@@ -63,10 +63,11 @@ public class XMLBook implements IModelData{
 
 	@Override
 	public void addNewBook(Book book) {
+		
 		Books bks = readXMLFile();
 		if(bks == null)
 			bks = new Books();
-		System.out.println(bks);
+		
 		this.books = bks.getBooks();
 		System.out.println("null?? "+this.books);
 		if(this.books == null){
@@ -81,7 +82,29 @@ public class XMLBook implements IModelData{
 		
 	}
 
+	@Override
+	public void setBookStatus(int[] ids, String status) {
+		
+		Books bks = readXMLFile();
+		if(bks == null)
+			bks = new Books();
 
+		this.books = bks.getBooks();
+
+		if(this.books != null){
+			
+			for(Integer id : ids)
+				for(Book book : this.books)
+					if(book.getId() == id)
+					{
+						book.setStatus(status);
+						break;
+					}
+			
+			writeToXMLFile(bks);
+		}
+		
+	}
 
 	@Override
 	public void addNewBook(Collection<Book> books) {
@@ -158,5 +181,7 @@ public class XMLBook implements IModelData{
 			e.printStackTrace();
 		}
 	}
+
+
 
 }
