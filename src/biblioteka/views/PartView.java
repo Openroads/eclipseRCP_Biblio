@@ -140,12 +140,10 @@ public class PartView {
 			    	try {
 
 			    		dataModel = new XMLBook("/home/dariusz/ProjecsWorkspace/book.xml");
-					
+			    		viewer.setInput(dataModel.getAllBooks());
 			    	} catch (JAXBException e1) {
 						e1.printStackTrace();
 					}
-			    	viewer.setInput(null);
-				    //viewer.refresh();
 	
 			    }else if(modelChose == 1)
 			    {
@@ -205,7 +203,7 @@ public class PartView {
 	}
 	public void refreshView()
     {
-    	viewer.refresh();
+		viewer.setInput(this.dataModel.getAllBooks());
     }
 	
 	@Focus

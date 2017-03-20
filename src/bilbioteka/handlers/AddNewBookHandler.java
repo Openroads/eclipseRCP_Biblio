@@ -29,9 +29,10 @@ public class AddNewBookHandler {
                         String publYear = dialog.getPublYear();
                         Book book = new Book(id,title,authors,publYear,dialog.getStatus());
                         dataM.addNewBook(book);
-                        System.out.println(title);
+
                         partv.refreshView();
-                       // System.out.println(author);
+                        System.out.println("AFTER refresh");
+                        System.out.println(dataM.getAllBooks().size());
                 }
         
 	}

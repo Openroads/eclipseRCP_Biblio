@@ -10,7 +10,7 @@ import biblioteka.interfaces.IModelData;
 
 public class MockBook implements IModelData {
 
-	private ArrayList<Book> books = new ArrayList<Book>();; 
+	private ArrayList<Book> books = new ArrayList<Book>();
 	
 	
 	public MockBook() {

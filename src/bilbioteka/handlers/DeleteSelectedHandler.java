@@ -20,6 +20,7 @@ public class DeleteSelectedHandler {
 		int[] idToDelete= pView.getSelectedBooksId();
 		
 		dataModel.deleteBook(idToDelete);
+		System.out.println(dataModel.getAllBooks());
 		pView.refreshView();
 		
 	}
