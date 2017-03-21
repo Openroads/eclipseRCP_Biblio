@@ -5,8 +5,6 @@ package biblioteka.views;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
@@ -19,7 +17,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-//import org.apache.commons.lang3.StringUtils;
+
 
 public class NewBookDialog extends Dialog {
         private Text txtId,txtTitle,txtAuthors,txtPublYear;
@@ -69,27 +67,7 @@ public class NewBookDialog extends Dialog {
                 Color red = new Color (device, 255, 0, 0);
                 lblMessage.setBackground(red);
                 lblMessage.setText("Space for errors message ");
-               /* txtUser.addModifyListener(new ModifyListener() {
 
-                        @Override
-                        public void modifyText(ModifyEvent e) {
-                                Text textWidget = (Text) e.getSource();
-                                String userText = textWidget.getText();
-                                user = userText;
-                        }
-                });
-
-
-                txtPassword.setText(password);
-                txtPassword.addModifyListener(new ModifyListener() {
-
-                        @Override
-                        public void modifyText(ModifyEvent e) {
-                                Text textWidget = (Text) e.getSource();
-                                String passwordText = textWidget.getText();
-                                password = passwordText;
-                        }
-                });*/
                 return container;
         }
         
@@ -133,6 +111,7 @@ public class NewBookDialog extends Dialog {
         protected void okPressed() {
         		
         		// TODO do walidacji
+        		
                 this.id 		= txtId.getText();
                 this.title 		= txtTitle.getText();
                 this.authors 	= txtAuthors.getText();
@@ -142,6 +121,8 @@ public class NewBookDialog extends Dialog {
                 super.okPressed();
               
         }
+
+
 
 		public int getId() {
 			

@@ -144,21 +144,25 @@ public class XMLBook implements IModelData{
 		
 	}
 
-	@Override
-	public void setBookStatus(Book book, String status) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
-	public void setBookStatus(Collection<Book> books, String status) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void checkBooksStatus() {
-		// TODO Auto-generated method stub
+	public boolean checkBooksStatus() {
+		Books bks = readXMLFile();
+		List<Book> xmlBooks = bks.getBooks();
+		System.out.println("checkBookstatusmethod");
+		if(xmlBooks != null){
+			int booksAmount = xmlBooks.size();
+			if(booksAmount != this.books.size())
+				return true;
+			
+			for(int i = 0; i < xmlBooks.size(); i++)
+				if(xmlBooks.get(i).getStatus().equals(this.books.get(i).getStatus()) == false)
+					{
+					this.books = xmlBooks;
+						return true;
+					}
+		}
+		return false;
 		
 	}
 	

@@ -7,10 +7,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
-import biblioteka.book.Book;
 import biblioteka.interfaces.IModelData;
 import biblioteka.views.EditStatusDialog;
-import biblioteka.views.NewBookDialog;
 import biblioteka.views.PartView;
 
 public class EditStatusHandler {

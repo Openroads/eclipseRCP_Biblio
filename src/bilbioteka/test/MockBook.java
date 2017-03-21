@@ -85,26 +85,7 @@ public class MockBook implements IModelData {
 				}
 	}
 
-	@Override
-	public void setBookStatus(Book book, String status) {
-		for(Book b : books)
-		{
-			if(b.equals(book))
-			{
-				b.setStatus(status);
-			}
-		}
-	}
 
-	@Override
-	public void setBookStatus(Collection<Book> books, String status) {
-		for(Book book : books)
-			for(Book cBook : this.books)
-				if (cBook.equals(book))
-				{
-					cBook.setStatus(status);
-				}
-	}
 	
 	@Override
 	public void setBookStatus(int[] ids,String status) {
@@ -118,9 +99,10 @@ public class MockBook implements IModelData {
 	}
 
 	@Override
-	public void checkBooksStatus() {
+	public boolean checkBooksStatus() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("check");
+		return false;
 	}
 
 }

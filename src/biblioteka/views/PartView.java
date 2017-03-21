@@ -2,10 +2,17 @@
 package biblioteka.views;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UISynchronize;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -15,6 +22,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Button;
@@ -34,9 +42,12 @@ public class PartView {
 	private Button selectAll;
 	private Button btnAddNew;
 	private Combo comboBox;
+	private Job job;
+	@Inject 
+	UISynchronize sync;
 	
 	@PostConstruct
-	public void postConstruct(Composite parent,ESelectionService service) {
+	public void postConstruct(Composite parent,ESelectionService service,Shell shell) {
 	    System.out.println("JEST");
 		parent.setLayout(new GridLayout(2, false));
 	    
@@ -103,7 +114,6 @@ public class PartView {
 	    	{
 				return ((Book)element).getStatus();
 	    		
-	    		
 	    	}
 	    });
 	    
@@ -132,40 +142,50 @@ public class PartView {
 	    	}
 	    	});
 	    
-	    // btnChangeStatus = new Button(parent, SWT.NONE);
+	   // btnChangeStatus = new Button(parent, SWT.NONE);
 	   // btnChangeStatus.setText("Change status");
 	   // btnAddNew = new Button(parent, SWT.NONE);
-	    //btnAddNew.setText("Add new");
+	   //btnAddNew.setText("Add new");
 	    
 	    
 	    comboBox.addSelectionListener(new SelectionAdapter() {
+	    	
 	    	@Override
 	    	public void widgetSelected(SelectionEvent e) {
 			    int modelChose = comboBox.getSelectionIndex();
+
 			    if(modelChose == 0)
 			    {
-				    //viewer.setInput(dataModel.getAllBooks());
-			    	try {
 
-			    		dataModel = new XMLBook("/home/dariusz/ProjecsWorkspace/book.xml");
-			    		viewer.setInput(dataModel.getAllBooks());
+			    	try {
+				    		
+			    			dataModel = new XMLBook("/home/dariusz/ProjecsWorkspace/book.xml");
+				    		
+				    		viewer.setInput(dataModel.getAllBooks());
+				    		
 			    	} catch (JAXBException e1) {
 						e1.printStackTrace();
 					}
 	
 			    }else if(modelChose == 1)
 			    {
+			    	
 			    	dataModel = new MockBook();
-				    viewer.setInput(dataModel.getAllBooks());
+			    	viewer.setInput(dataModel.getAllBooks());
+			    	
+			    	if(job == null){	
+			    		
+				    	job =runTrackedThread(shell);
+			    		job.schedule();
+					    
+			    	}
 	
 			    }
 			
 	    	}
 			
 		});
-	    comboBox.notifyListeners(SWT.Selection,new Event());
-	 
-	    
+	    	comboBox.notifyListeners(SWT.Selection,new Event());
 	    
 	}
 	public void addNewBookListener(SelectionAdapter adapter)
@@ -213,6 +233,88 @@ public class PartView {
 		comboBox.setFocus();
 	}
 	
+
+	private Job runTrackedThread(Shell shell) {
+		
+	    Job job = new Job("Biblioteka checkstatus") {
+	        
+	    	@Override
+	        protected IStatus run(IProgressMonitor monitor) {
+	            
+	        	while(true)
+	        	{
+		        	if(dataModel.checkBooksStatus()==false)
+		        	{
+		        		try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							
+							e.printStackTrace();
+						}
+		        	}else
+		        	{
+	        	
+		             sync.asyncExec(new Runnable() {
+		                  @Override
+		                  public void run() {
+		                 
+		                	  	  
+			                      MessageDialog.openInformation(shell, "Message", "Book status has changed");
+			                      refreshView();
 	
+		                    }
+		                });
+		        	}
+		             
+	        	}
+	        	//return Status.OK_STATUS;
+	        	
+	        }
+	        
+	    };
+
+	    
+		return job;
+	
+	}
+	
+	private Job changeStatusJob() {
+		
+	    Job job = new Job("Biblioteka checkstatus") {
+	        
+	    	@Override
+	        protected IStatus run(IProgressMonitor monitor) {
+	            
+	      
+		        	if(dataModel.checkBooksStatus()==false)
+		        	{
+		        		try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							
+							e.printStackTrace();
+						}
+		        	}else
+		        	{
+	        	
+		             sync.asyncExec(new Runnable() {
+		                  @Override
+		                  public void run() {
+		                 
+			                  refreshView();
+	
+		                    }
+		                });
+		        	}
+		        	
+		        	return Status.OK_STATUS;
+	        	}
+	        
+	    };
+
+	    
+		return job;
+	
+	}
 	
 }
