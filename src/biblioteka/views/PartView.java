@@ -266,7 +266,7 @@ public class PartView {
 						}
 		        	}else
 		        	{
-		        		System.out.println(id[0]);
+		        	
 		             sync.asyncExec(new Runnable() {
 		                  @Override
 		                  public void run() {
@@ -274,7 +274,7 @@ public class PartView {
 		                	  	  for(int i =0; i < id.length ; i++)
 		                	  	  {
 		                	  		 book= dataModel.getBookById(id[i]);
-			                	  	  System.out.println(book);
+			                	  	  
 				                      MessageDialog.openInformation(shell, "Message", "Book "+ book.getTitle() + " has changed status for \""+ book.getStatus()+"\"");
 		                	  	  }
 		                	  	  

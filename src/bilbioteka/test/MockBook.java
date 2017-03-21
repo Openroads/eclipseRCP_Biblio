@@ -62,7 +62,8 @@ public class MockBook implements IModelData {
 
 	@Override
 	public void addNewBook(Book book) {
-		books.add(book);
+		this.books.add(book);
+		this.testBooks.add(book);
 		
 	}
 
@@ -78,6 +79,7 @@ public class MockBook implements IModelData {
 			if(book.getId() == id)
 			{
 				this.books.remove(book);
+				this.testBooks.remove(book);
 				break;
 			}
 		
@@ -91,6 +93,7 @@ public class MockBook implements IModelData {
 				if(book.getId() == id)
 				{
 					this.books.remove(book);
+					this.testBooks.remove(book);
 					break;
 				}
 	}
@@ -100,14 +103,20 @@ public class MockBook implements IModelData {
 	@Override
 	public void setBookStatus(int[] ids,String status) {
 		for(Integer id : ids)
-			for(Book book : books)
+			
+			for(int i =0; i < this.books.size() ; i++)
+			{
+				Book book = this.books.get(i);
+				
 				if(book.getId() == id)
 				{
 					book.setStatus(status);
+					this.testBooks.get(i).setStatus(status);
 					break;
 				}
+	
+			}
 	}
-
 	@Override
 	public Integer[] checkBooksStatus() {
 		// TODO Auto-generated method stub
