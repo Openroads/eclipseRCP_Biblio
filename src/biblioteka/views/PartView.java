@@ -41,8 +41,10 @@ public class PartView {
 	private IModelData dataModel;
 	private Button selectAll;
 	private Button btnAddNew;
+	private Button btnChangeStatus;
 	private Combo comboBox;
 	private Job job;
+	private Job jobChangeSt;
 	@Inject 
 	UISynchronize sync;
 	
@@ -142,10 +144,18 @@ public class PartView {
 	    	}
 	    	});
 	    
-	   // btnChangeStatus = new Button(parent, SWT.NONE);
-	   // btnChangeStatus.setText("Change status");
-	   // btnAddNew = new Button(parent, SWT.NONE);
-	   //btnAddNew.setText("Add new");
+	   btnChangeStatus = new Button(parent, SWT.NONE);
+	   btnChangeStatus.setText("Change status thread");
+	   btnChangeStatus.setVisible(false);
+	   btnChangeStatus.setLayoutData( new GridData(SWT.LEFT,SWT.CENTER,true,false,1,1));
+	   btnChangeStatus.addSelectionListener(new SelectionAdapter() {
+	    	@Override
+	    	public void widgetSelected(SelectionEvent e) {
+	    		if(jobChangeSt==null)
+	    			jobChangeSt = createChangeStatusJob((MockBook)dataModel);
+	    		jobChangeSt.schedule();
+	    	}
+	    	});
 	    
 	    
 	    comboBox.addSelectionListener(new SelectionAdapter() {
@@ -156,7 +166,7 @@ public class PartView {
 
 			    if(modelChose == 0)
 			    {
-
+			    	btnChangeStatus.setVisible(false);
 			    	try {
 				    		
 			    			dataModel = new XMLBook("/home/dariusz/ProjecsWorkspace/book.xml");
@@ -172,6 +182,7 @@ public class PartView {
 			    	
 			    	dataModel = new MockBook();
 			    	viewer.setInput(dataModel.getAllBooks());
+			    	btnChangeStatus.setVisible(true);
 			    	
 			    	if(job == null){	
 			    		
@@ -243,7 +254,9 @@ public class PartView {
 	            
 	        	while(true)
 	        	{
-		        	if(dataModel.checkBooksStatus()==false)
+	        		Integer[] id = dataModel.checkBooksStatus();
+	        		
+		        	if(id.length == 0)
 		        	{
 		        		try {
 							Thread.sleep(1000);
@@ -253,13 +266,18 @@ public class PartView {
 						}
 		        	}else
 		        	{
-	        	
+		        		System.out.println(id[0]);
 		             sync.asyncExec(new Runnable() {
 		                  @Override
 		                  public void run() {
-		                 
+		                	  	Book book = null;
+		                	  	  for(int i =0; i < id.length ; i++)
+		                	  	  {
+		                	  		 book= dataModel.getBookById(id[i]);
+			                	  	  System.out.println(book);
+				                      MessageDialog.openInformation(shell, "Message", "Book "+ book.getTitle() + " has changed status for \""+ book.getStatus()+"\"");
+		                	  	  }
 		                	  	  
-			                      MessageDialog.openInformation(shell, "Message", "Book status has changed");
 			                      refreshView();
 	
 		                    }
@@ -278,40 +296,25 @@ public class PartView {
 	
 	}
 	
-	private Job changeStatusJob() {
+	private Job createChangeStatusJob(MockBook dm) {
 		
-	    Job job = new Job("Biblioteka checkstatus") {
+	    Job job = new Job("Biblioteka changestatus") {
 	        
 	    	@Override
 	        protected IStatus run(IProgressMonitor monitor) {
-	            
 	      
-		        	if(dataModel.checkBooksStatus()==false)
-		        	{
-		        		try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							
-							e.printStackTrace();
-						}
-		        	}else
-		        	{
-	        	
 		             sync.asyncExec(new Runnable() {
 		                  @Override
 		                  public void run() {
 		                 
-			                  refreshView();
+			                  dm.changeRandomStatus();
 	
 		                    }
 		                });
-		        	}
 		        	
 		        	return Status.OK_STATUS;
 	        	}
-	        
 	    };
-
 	    
 		return job;
 	

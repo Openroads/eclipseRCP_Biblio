@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Random;
 
 import biblioteka.book.Book;
 import biblioteka.interfaces.IModelData;
@@ -11,6 +12,7 @@ import biblioteka.interfaces.IModelData;
 public class MockBook implements IModelData {
 
 	private ArrayList<Book> books = new ArrayList<Book>();
+	private ArrayList<Book> testBooks;
 	
 	
 	public MockBook() {
@@ -27,7 +29,15 @@ public class MockBook implements IModelData {
 			new Book(8,"Clean code","Robert c. martin","2014","Wypożyczona")
 	};
 	
-	books.addAll(Arrays.asList(bookExamle));	
+	this.books.addAll(Arrays.asList(bookExamle));
+	
+	this.testBooks = new ArrayList<Book>(this.books.size());
+	for(Book book: this.books)
+	{
+		Book clone = book.clone();
+		System.out.println(clone);
+		this.testBooks.add(clone);
+	}
 	
 	}
 	
@@ -99,10 +109,27 @@ public class MockBook implements IModelData {
 	}
 
 	@Override
-	public boolean checkBooksStatus() {
+	public Integer[] checkBooksStatus() {
 		// TODO Auto-generated method stub
 		System.out.println("check");
-		return false;
+		ArrayList<Integer> ids = new  ArrayList<Integer>(); 
+		for(int i = 0; i < this.books.size(); i++)
+			if(this.books.get(i).getStatus().equals(this.testBooks.get(i).getStatus()) == false)
+				{
+					ids.add(this.books.get(i).getId());
+					this.books.get(i).setStatus(new String(this.testBooks.get(i).getStatus()));
+				}
+		Integer[] ret = new Integer[ids.size()];
+		ret = ids.toArray(ret);
+		//System.out.println(ret.length);
+		return ret;
+	}
+	
+	public void changeRandomStatus()
+	{
+		Random generator = new Random(); 
+		int i = generator.nextInt(this.books.size());
+		this.testBooks.get(i).setStatus("Changed from thred");
 	}
 
 }

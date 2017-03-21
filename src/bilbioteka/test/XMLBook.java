@@ -57,7 +57,11 @@ public class XMLBook implements IModelData{
 
 	@Override
 	public Book getBookById(int id) {
-		// TODO Auto-generated method stub
+		for(Book book : books)
+			if(book.getId() == id)
+			{
+				return book;
+			}
 		return null;
 	}
 
@@ -146,23 +150,29 @@ public class XMLBook implements IModelData{
 
 
 	@Override
-	public boolean checkBooksStatus() {
+	public Integer[] checkBooksStatus() {
+		
+		ArrayList<Integer> ids = new  ArrayList<Integer>(); 
 		Books bks = readXMLFile();
 		List<Book> xmlBooks = bks.getBooks();
 		System.out.println("checkBookstatusmethod");
 		if(xmlBooks != null){
 			int booksAmount = xmlBooks.size();
 			if(booksAmount != this.books.size())
-				return true;
+				return new Integer[0];
 			
 			for(int i = 0; i < xmlBooks.size(); i++)
 				if(xmlBooks.get(i).getStatus().equals(this.books.get(i).getStatus()) == false)
 					{
-					this.books = xmlBooks;
-						return true;
+						ids.add(this.books.get(i).getId());
+						this.books = xmlBooks;
 					}
 		}
-		return false;
+		
+		
+		Integer[] ret = new Integer[ids.size()];
+		ret = ids.toArray(ret);
+		return ret;
 		
 	}
 	

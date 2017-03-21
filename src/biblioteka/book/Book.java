@@ -3,7 +3,7 @@ package biblioteka.book;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "book")
-public class Book {
+public class Book implements Cloneable{
 	public Book()
 	{}
 	
@@ -57,6 +57,12 @@ public class Book {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Book clone()
+	{
+		Book cloneBook = new Book(this.id,this.title,this.authors,this.publicationYear,this.status);
+		return cloneBook;
+		
 	}
 	
 	private int id;

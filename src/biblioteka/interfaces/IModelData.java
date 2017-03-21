@@ -13,6 +13,6 @@ public interface IModelData {
 	public void deleteBook(int id);
 	public void deleteBook(int[] ids);
 	public void setBookStatus(int[] ids, String status);
-	public boolean checkBooksStatus();
+	public Integer[] checkBooksStatus();
 
 }
