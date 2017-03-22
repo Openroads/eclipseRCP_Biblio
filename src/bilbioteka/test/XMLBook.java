@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,6 +13,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import biblioteka.book.Book;
+import biblioteka.interfaces.IBook;
 import biblioteka.interfaces.IModelData;
 
 public class XMLBook implements IModelData{
@@ -24,8 +26,8 @@ public class XMLBook implements IModelData{
 	private Unmarshaller unMarshaller;
 	
 
-	public XMLBook(String filePath) throws JAXBException {
-		this.filePath = filePath;
+	public XMLBook() throws JAXBException {
+		this.filePath = "/home/dariusz/ProjecsWorkspace/book.xml";
 		this.file = new File(filePath);
 		this.context = JAXBContext.newInstance(Books.class);
 		this.marshaller = context.createMarshaller();
@@ -47,12 +49,13 @@ public class XMLBook implements IModelData{
 	}
 	
 	@Override
-	public Collection<Book> getAllBooks() {
+	public Collection<IBook> getAllBooks() {
 		
 		if(this.books == null)
 			return Collections.emptyList();
 		else
-			return this.books;
+			return this.books.stream().map(
+					x-> (IBook) x).collect(Collectors.toList());
 	}
 
 	@Override
@@ -66,7 +69,7 @@ public class XMLBook implements IModelData{
 	}
 
 	@Override
-	public void addNewBook(Book book) {
+	public void addNewBook(IBook book) {
 		
 		Books bks = readXMLFile();
 		if(bks == null)
@@ -78,7 +81,7 @@ public class XMLBook implements IModelData{
 			this.books = new ArrayList<Book>();
 			bks.setBooks(this.books);
 		}
-		this.books.add(book);
+		this.books.add((Book) book);
 		System.out.println(this.books);
 		
 		writeToXMLFile(bks);
@@ -110,10 +113,6 @@ public class XMLBook implements IModelData{
 		
 	}
 
-	@Override
-	public void addNewBook(Collection<Book> books) {
-		
-	}
 
 	@Override
 	public void deleteBook(int id) {
@@ -194,6 +193,12 @@ public class XMLBook implements IModelData{
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void addNewBook(Collection<IBook> books) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

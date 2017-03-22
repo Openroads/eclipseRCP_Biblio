@@ -10,7 +10,6 @@
     <mainMenu xmi:id="_fJA80AtWEee46JXrYQaM-Q" elementId="biblioteka.menu.0">
       <children xsi:type="menu:Menu" xmi:id="_5u-c4AtYEee46JXrYQaM-Q" elementId="biblioteka.menu.books" label="Books">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_rnR0UAtWEee46JXrYQaM-Q" elementId="biblioteka.handledmenuitem.books" label="Add new" command="_Zq5MMAvjEeeiv50PaHxdpw"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_MhfgsAtZEee46JXrYQaM-Q" elementId="biblioteka.handledmenuitem.refresh" label="Refresh"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_RaG1cAtZEee46JXrYQaM-Q" elementId="biblioteka.handledmenuitem.editstatusselected" label="Edit status selected" command="_z5kroA0MEeezOrukbAxttg"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_PLHOUAtZEee46JXrYQaM-Q" elementId="biblioteka.handledmenuitem.deleteselected" label="Delete selected" command="_otxJ8AvtEee8LunkDbk5yw"/>
         <children xsi:type="menu:MenuSeparator" xmi:id="_Y9oRQAtZEee46JXrYQaM-Q" elementId="biblioteka.menuseparator.0"/>

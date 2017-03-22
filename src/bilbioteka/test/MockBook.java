@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import biblioteka.book.Book;
+import biblioteka.interfaces.IBook;
 import biblioteka.interfaces.IModelData;
 
 public class MockBook implements IModelData {
@@ -42,13 +44,14 @@ public class MockBook implements IModelData {
 	}
 	
 	@Override
-	public Collection<Book> getAllBooks() {
+	public Collection<IBook> getAllBooks() {
 		if(books == null)
 			return Collections.emptyList();
-		else
-			return books;
+		else			
+			return this.books.stream().map(
+					x-> (IBook) x).collect(Collectors.toList());
+					
 	}
-
 	@Override
 	public Book getBookById(int id) {
 		for(Book book : books)
@@ -61,14 +64,15 @@ public class MockBook implements IModelData {
 	}
 
 	@Override
-	public void addNewBook(Book book) {
-		this.books.add(book);
-		this.testBooks.add(book);
+	public void addNewBook(IBook book) {
+		
+		this.books.add((Book) book);
+		this.testBooks.add((Book) book);
 		
 	}
 
 	@Override
-	public void addNewBook(Collection<Book> books) {
+	public void addNewBook(Collection<IBook> books) {
 		books.addAll(books);
 		
 	}
@@ -129,8 +133,7 @@ public class MockBook implements IModelData {
 					this.books.get(i).setStatus(new String(this.testBooks.get(i).getStatus()));
 				}
 		Integer[] ret = new Integer[ids.size()];
-		ret = ids.toArray(ret);
-		//System.out.println(ret.length);
+		ret = ids.toArray(ret);;
 		return ret;
 	}
 	

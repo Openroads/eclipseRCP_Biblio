@@ -1,9 +1,12 @@
  
 package biblioteka.views;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.xml.bind.JAXBException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -21,7 +24,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -29,10 +31,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+
 import biblioteka.book.Book;
 import biblioteka.interfaces.IModelData;
 import bilbioteka.test.MockBook;
-import bilbioteka.test.XMLBook;
+
 
 
 public class PartView {
@@ -158,6 +161,38 @@ public class PartView {
 	    	});
 	    
 	    
+	   File file = new File("/home/dariusz/ProjecsWorkspace/EclipseRCP/Biblioteka/bin/biblioteka/views/config");
+	    
+	    try {
+			String className = new Scanner(file).nextLine();
+			System.out.println(className);
+			
+			Class clas = Class.forName(className);
+			
+			this.dataModel = (IModelData) clas.newInstance();
+			
+			viewer.setInput(this.dataModel.getAllBooks());
+			
+			job =runTrackedThread(shell);
+    		job.schedule();
+			
+		
+	    } catch (FileNotFoundException e2) {
+			System.out.println("File not found"+ e2);
+	    	e2.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			System.out.println("Class not found "+ e1);
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			System.out.println("Instantation" +e1);
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			System.out.println("Illegal Acces" +e1);
+			e1.printStackTrace();
+		}
+	   
+	   
+	   
 	    comboBox.addSelectionListener(new SelectionAdapter() {
 	    	
 	    	@Override
@@ -167,36 +202,35 @@ public class PartView {
 			    if(modelChose == 0)
 			    {
 			    	btnChangeStatus.setVisible(false);
-			    	try {
-				    		
+			    	/*try {
 			    			dataModel = new XMLBook("/home/dariusz/ProjecsWorkspace/book.xml");
 				    		
 				    		viewer.setInput(dataModel.getAllBooks());
 				    		
 			    	} catch (JAXBException e1) {
 						e1.printStackTrace();
-					}
+					}*/
 	
 			    }else if(modelChose == 1)
 			    {
 			    	
-			    	dataModel = new MockBook();
-			    	viewer.setInput(dataModel.getAllBooks());
 			    	btnChangeStatus.setVisible(true);
+			    	/*dataModel = new MockBook();
+			    	viewer.setInput(dataModel.getAllBooks());
 			    	
 			    	if(job == null){	
 			    		
 				    	job =runTrackedThread(shell);
 			    		job.schedule();
 					    
-			    	}
+			    	}*/
 	
 			    }
 			
 	    	}
 			
 		});
-	    	comboBox.notifyListeners(SWT.Selection,new Event());
+	    	//comboBox.notifyListeners(SWT.Selection,new Event());
 	    
 	}
 	public void addNewBookListener(SelectionAdapter adapter)
@@ -273,7 +307,7 @@ public class PartView {
 		                	  	Book book = null;
 		                	  	  for(int i =0; i < id.length ; i++)
 		                	  	  {
-		                	  		 book= dataModel.getBookById(id[i]);
+		                	  		 book= (Book)dataModel.getBookById(id[i]);
 			                	  	  
 				                      MessageDialog.openInformation(shell, "Message", "Book "+ book.getTitle() + " has changed status for \""+ book.getStatus()+"\"");
 		                	  	  }

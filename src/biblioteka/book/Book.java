@@ -2,8 +2,17 @@ package biblioteka.book;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import biblioteka.interfaces.IBook;
+
 @XmlRootElement(name = "book")
-public class Book implements Cloneable{
+public class Book implements IBook, Cloneable{
+	
+	private int id;
+	private String title;
+	private String authors;
+	private String publicationYear;
+	private String status;
+	
 	public Book()
 	{}
 	
@@ -60,14 +69,9 @@ public class Book implements Cloneable{
 	}
 	public Book clone()
 	{
-		Book cloneBook = new Book(this.id,this.title,this.authors,this.publicationYear,this.status);
+		Book cloneBook = new Book(this.id,new String(this.title),new String(this.authors),new String(this.publicationYear),new String(this.status));
 		return cloneBook;
 		
 	}
-	
-	private int id;
-	private String title;
-	private String authors;
-	private String publicationYear;
-	private String status;
+
 }
